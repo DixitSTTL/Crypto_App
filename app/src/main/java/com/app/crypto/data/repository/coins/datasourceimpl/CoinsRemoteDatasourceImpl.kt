@@ -9,5 +9,5 @@ class CoinsRemoteDatasourceImpl(
     private val apiService: ApiService,
     private val apiKey: String
 ) : CoinsRemoteDatasource {
-    override suspend fun getCoins(): Response<Coins> = apiService.getCoins(apiKey)
+    override suspend fun getCoins(): Response<Coins> = apiService.getCoins(apiKey, "100")
 }

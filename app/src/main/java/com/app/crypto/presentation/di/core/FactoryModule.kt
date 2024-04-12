@@ -1,5 +1,6 @@
 package com.app.crypto.presentation.di.core
 
+import com.app.crypto.domain.usecase.GetCoinHistoryUseCase
 import com.app.crypto.domain.usecase.GetCoinsDetailUseCase
 import com.app.crypto.domain.usecase.GetCoinsUseCase
 import com.app.crypto.presentation.coindetail.CoinDetailViewModelFactory
@@ -27,10 +28,12 @@ class FactoryModule {
     @Provides
     @Singleton
     fun provideCoinDetailViewModelFactory(
-        getCoinsDetailUseCase: GetCoinsDetailUseCase
+        getCoinsDetailUseCase: GetCoinsDetailUseCase,
+        getCoinHistoryUseCase: GetCoinHistoryUseCase
     ): CoinDetailViewModelFactory {
         return CoinDetailViewModelFactory(
-            getCoinsDetailUseCase
+            getCoinsDetailUseCase,
+            getCoinHistoryUseCase
         )
     }
 

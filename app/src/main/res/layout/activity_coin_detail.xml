@@ -17,6 +17,11 @@
             name="coinData"
             type="com.app.crypto.data.model.Coin_" />
 
+        <variable
+            name="coinHistoryData"
+            type="com.app.crypto.data.model.CoinHistoryData" />
+
+
     </data>
 
     <LinearLayout
@@ -81,6 +86,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
+                            android:textSize="12sp"
                             android:text="@{`(`+coinData.symbol+`)`}"
                             tools:text="(BTC)" />
 
@@ -116,27 +122,163 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="@{coinData.description}"
-                        app:layout_constraintStart_toStartOf="@+id/imageView"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView"
-                        tools:text="....." />
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="320dp"
+                    android:layout_marginHorizontal="8dp"
+                    app:setLightDark="@{lightDark}"
+                    app:setMaxChart="@{coinHistoryData.history}"
+                    app:setRedOrGreen="@{coinHistoryData.change}"
+                    app:setViewModel="@{mViewModel}" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/radioGroup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/time1h"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="1H"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/time3h"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="3H"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/time12h"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="12H"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/time24h"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="24H"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/time7d"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="7D"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/time1m"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="1M"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/time3m"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="3M"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/time1y"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="1Y"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/time3y"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="3Y"
+                                android:textSize="12sp" />
+
+                            <RadioButton
+                                android:id="@+id/time5y"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24sp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/selector_time_frame"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="5Y"
+                                android:textSize="12sp" />
+
+                        </RadioGroup>
+
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="20dp"
-                    app:setLightDark="@{lightDark}"
-                    app:setMaxChart="@{coinData.sparkline}"
-                    app:setRedOrGreen="@{coinData.change}" />
+                    android:textSize="16sp"
+                    android:text="@{coinData.description}"
+                    app:layout_constraintStart_toStartOf="@+id/imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView"
+                    tools:text="....." />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -163,8 +305,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            app:setMarketCap="@{coinData.marketCap}"
                             android:textStyle="bold"
+                            app:setMarketCap="@{coinData.marketCap}"
                             tools:text="$0Bn" />
                     </LinearLayout>
 

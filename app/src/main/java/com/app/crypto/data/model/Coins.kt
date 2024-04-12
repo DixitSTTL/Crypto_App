@@ -1,4 +1,5 @@
 package com.app.crypto.data.model
+
 data class Coins(
     val `data`: Data,
     val status: String
@@ -23,7 +24,7 @@ data class Coin(
     val name: String,
     val price: String,
     val rank: Int,
-    val sparkline: List<String>,
+    val sparkline: List<String?>,
     val symbol: String,
     val tier: Int,
     val uuid: String

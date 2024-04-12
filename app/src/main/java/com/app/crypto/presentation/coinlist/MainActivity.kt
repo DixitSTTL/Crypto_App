@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                 Intent(
                     this@MainActivity,
                     ActivityCoinDetail::class.java
-                ).putExtra("COIN_ID",data.uuid)
+                ).putExtra("COIN_ID", data.uuid)
             )
         }
 

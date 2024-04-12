@@ -1,7 +1,9 @@
 package com.app.crypto.presentation.di.core
 
+import com.app.crypto.domain.repository.CoinHistoryRepository
 import com.app.crypto.domain.repository.CoinsDetailRepository
 import com.app.crypto.domain.repository.CoinsRepository
+import com.app.crypto.domain.usecase.GetCoinHistoryUseCase
 import com.app.crypto.domain.usecase.GetCoinsDetailUseCase
 import com.app.crypto.domain.usecase.GetCoinsUseCase
 import dagger.Module
@@ -25,6 +27,12 @@ class UseCaseModule {
     @Singleton
     fun provideGetCoinsDetailUseCase(coinsDetailRepository: CoinsDetailRepository): GetCoinsDetailUseCase {
         return GetCoinsDetailUseCase(coinsDetailRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCoinHistoryUseCase(coinsHistoryRepository: CoinHistoryRepository): GetCoinHistoryUseCase {
+        return GetCoinHistoryUseCase(coinsHistoryRepository)
     }
 
 }

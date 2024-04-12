@@ -7,7 +7,7 @@ import com.app.crypto.domain.repository.CoinsDetailRepository
 class CoinsDetailRepositoryImpl(var coinsDatasource: CoinsDetailsRemoteDatasource) :
     CoinsDetailRepository {
 
-    override suspend fun getCoinsDetail(end:String): Coin_? {
+    override suspend fun getCoinsDetail(end: String): Coin_? {
         val response = coinsDatasource.getCoinsDetail(end)
         val body = response.body()
         val dataCoin = body?.data?.coin

@@ -9,5 +9,6 @@ class CoinsDetailRemoteDatasourceImpl(
     private val apiService: ApiService,
     private val apiKey: String
 ) : CoinsDetailsRemoteDatasource {
-    override suspend fun getCoinsDetail(end:String): Response<CoinDetail> =apiService.getCoinDetail("coin/"+end,apiKey)
+    override suspend fun getCoinsDetail(end: String): Response<CoinDetail> =
+        apiService.getCoinDetail("coin/" + end, apiKey)
 }

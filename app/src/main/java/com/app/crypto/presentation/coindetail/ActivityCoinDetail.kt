@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.app.crypto.R
 import com.app.crypto.databinding.ActivityCoinDetailBinding
+import com.app.crypto.presentation.util.CoinHistoryTimeFrame
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -22,6 +23,7 @@ class ActivityCoinDetail : AppCompatActivity() {
     private lateinit var mViewModel: CoinDetailViewModel
     lateinit var COIN_ID: String
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding =
@@ -29,8 +31,6 @@ class ActivityCoinDetail : AppCompatActivity() {
         setContentView(mBinding.root)
         mViewModel =
             ViewModelProvider(this@ActivityCoinDetail, factory)[CoinDetailViewModel::class.java]
-
-
 
         _init()
         observe()
@@ -51,6 +51,51 @@ class ActivityCoinDetail : AppCompatActivity() {
         mBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+        mBinding.radioGroup.check(R.id.time24h)
+        mBinding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+
+            when (checkedId) {
+                R.id.time1h -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.H1
+                }
+
+                R.id.time3h -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.H3
+                }
+
+                R.id.time12h -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.H12
+                }
+
+                R.id.time24h -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.H24
+                }
+
+                R.id.time7d -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.D7
+                }
+
+                R.id.time1m -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.D30
+                }
+
+                R.id.time3m -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.M3
+                }
+
+                R.id.time1y -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.Y1
+                }
+
+                R.id.time3y -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.Y3
+                }
+                R.id.time5y -> {
+                    mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.Y5
+                }
+            }
+
+        }
 
 
     }
@@ -59,6 +104,14 @@ class ActivityCoinDetail : AppCompatActivity() {
 
         mViewModel.getCoinsDetail(COIN_ID).observe(this@ActivityCoinDetail) {
             mBinding.coinData = it
+
+        }
+        mViewModel.mutableTimeFrame.observe(this@ActivityCoinDetail) {
+            mViewModel.getHistoryData(COIN_ID)
+
+        }
+        mViewModel.mutableHistoryData.observe(this@ActivityCoinDetail) {
+            mBinding.coinHistoryData = it
 
         }
     }
