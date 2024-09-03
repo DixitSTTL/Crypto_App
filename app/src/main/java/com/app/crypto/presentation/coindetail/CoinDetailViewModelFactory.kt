@@ -7,11 +7,13 @@ import com.app.crypto.domain.usecase.GetCoinsDetailUseCase
 
 class CoinDetailViewModelFactory(
     var getCoinsDetailUseCase: GetCoinsDetailUseCase,
-    var getCoinHistoryUseCase: GetCoinHistoryUseCase
+    var getCoinHistoryUseCase: GetCoinHistoryUseCase,
+    var coinId: String
+
 ) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CoinDetailViewModel(getCoinsDetailUseCase, getCoinHistoryUseCase) as T
+        return CoinDetailViewModel(getCoinsDetailUseCase, getCoinHistoryUseCase,coinId) as T
     }
 }

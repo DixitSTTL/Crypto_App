@@ -25,17 +25,19 @@ class FactoryModule {
         )
     }
 
-    @Provides
-    @Singleton
-    fun provideCoinDetailViewModelFactory(
-        getCoinsDetailUseCase: GetCoinsDetailUseCase,
-        getCoinHistoryUseCase: GetCoinHistoryUseCase
-    ): CoinDetailViewModelFactory {
-        return CoinDetailViewModelFactory(
-            getCoinsDetailUseCase,
-            getCoinHistoryUseCase
-        )
-    }
+//    @Provides
+//    @Singleton
+//    fun provideCoinDetailViewModelFactory(
+//        getCoinsDetailUseCase: GetCoinsDetailUseCase,
+//        getCoinHistoryUseCase: GetCoinHistoryUseCase,
+//        coinId:String
+//    ): CoinDetailViewModelFactory {
+//        return CoinDetailViewModelFactory(
+//            getCoinsDetailUseCase,
+//            getCoinHistoryUseCase,
+//            coinId
+//        )
+//    }
 
 
 }

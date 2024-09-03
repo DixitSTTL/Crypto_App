@@ -7,18 +7,24 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.app.crypto.R
 import com.app.crypto.databinding.ActivityCoinDetailBinding
+import com.app.crypto.domain.usecase.GetCoinHistoryUseCase
+import com.app.crypto.domain.usecase.GetCoinsDetailUseCase
 import com.app.crypto.presentation.util.CoinHistoryTimeFrame
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ActivityCoinDetail : AppCompatActivity() {
-    @Inject
     lateinit var factory: CoinDetailViewModelFactory
+    @Inject
+    lateinit var getCoinsDetailUseCase: GetCoinsDetailUseCase
+    @Inject
+    lateinit var getCoinHistoryUseCase: GetCoinHistoryUseCase
     private lateinit var mBinding: ActivityCoinDetailBinding
     private lateinit var mViewModel: CoinDetailViewModel
     lateinit var COIN_ID: String
@@ -29,28 +35,52 @@ class ActivityCoinDetail : AppCompatActivity() {
         mBinding =
             DataBindingUtil.setContentView(this@ActivityCoinDetail, R.layout.activity_coin_detail)
         setContentView(mBinding.root)
+
+        readIntent()
+        factory = CoinDetailViewModelFactory(
+            getCoinsDetailUseCase = getCoinsDetailUseCase,
+            getCoinHistoryUseCase = getCoinHistoryUseCase,
+            coinId = COIN_ID
+        )
+
         mViewModel =
             ViewModelProvider(this@ActivityCoinDetail, factory)[CoinDetailViewModel::class.java]
 
-        _init()
+        init()
+        setToolbar()
         observe()
 
     }
 
-
-    private fun _init() {
-        mBinding.mViewModel = mViewModel
-        mBinding.lightDark = isSystemInDarkMode()
+    private fun readIntent() {
 
         intent?.let {
             COIN_ID = it.getStringExtra("COIN_ID").toString()
-
+            ViewCompat.setTransitionName(
+                mBinding.imageView,
+                "coin-" + COIN_ID
+            )
+            ViewCompat.setTransitionName(
+                mBinding.coinTxt,
+                "text-" + COIN_ID
+            )
         }
+    }
+
+    private fun setToolbar() {
         setSupportActionBar(mBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+    }
+
+
+    private fun init() {
+
+        mBinding.mViewModel = mViewModel
+        mBinding.lightDark = isSystemInDarkMode()
+
         mBinding.radioGroup.check(R.id.time24h)
         mBinding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
 
@@ -94,6 +124,8 @@ class ActivityCoinDetail : AppCompatActivity() {
                     mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.Y5
                 }
             }
+            mViewModel.getHistoryData()
+
 
         }
 
@@ -102,12 +134,8 @@ class ActivityCoinDetail : AppCompatActivity() {
 
     private fun observe() {
 
-        mViewModel.getCoinsDetail(COIN_ID).observe(this@ActivityCoinDetail) {
+        mViewModel.mutableCoinList.observe(this@ActivityCoinDetail) {
             mBinding.coinData = it
-
-        }
-        mViewModel.mutableTimeFrame.observe(this@ActivityCoinDetail) {
-            mViewModel.getHistoryData(COIN_ID)
 
         }
         mViewModel.mutableHistoryData.observe(this@ActivityCoinDetail) {

@@ -2,7 +2,8 @@ package com.app.crypto.data.model
 
 data class Coins(
     val `data`: Data,
-    val status: String
+    val status: String,
+    val message: String,
 )
 
 data class Data(

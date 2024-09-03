@@ -1,11 +1,10 @@
 package com.app.crypto.presentation.coindetail
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.app.crypto.data.model.CoinHistoryData
+import com.app.crypto.data.model.Coin_
 import com.app.crypto.domain.usecase.GetCoinHistoryUseCase
 import com.app.crypto.domain.usecase.GetCoinsDetailUseCase
 import com.app.crypto.presentation.util.CoinHistoryTimeFrame
@@ -13,23 +12,33 @@ import kotlinx.coroutines.launch
 
 class CoinDetailViewModel(
     var getCoinsDetailUseCase: GetCoinsDetailUseCase,
-    var getCoinHistoryUseCase: GetCoinHistoryUseCase
+    var getCoinHistoryUseCase: GetCoinHistoryUseCase,
+    var coinId: String
 ) : ViewModel() {
 
-
     val mutableHistoryData = MutableLiveData<CoinHistoryData?>()
+    val mutableCoinList = MutableLiveData<Coin_?>()
     val mutableTimeFrame = MutableLiveData(CoinHistoryTimeFrame.H24)
-    fun getCoinsDetail(COIN_ID: String) = liveData {
-        val coinList = getCoinsDetailUseCase.execute(COIN_ID)
-        emit(coinList)
+
+    init {
+        getCoinsDetail()
+        getHistoryData()
     }
 
-    fun getHistoryData(COIN_ID: String) {
+
+    private fun getCoinsDetail() {
         viewModelScope.launch {
-            Log.d("bfbf", ":" + mutableTimeFrame.value!!.timePeriod)
+            val coinList = getCoinsDetailUseCase.execute(coinId)
+            mutableCoinList.postValue(coinList)
+
+        }
+    }
+
+    fun getHistoryData() {
+        viewModelScope.launch {
 
             val coinList =
-                getCoinHistoryUseCase.execute(COIN_ID, mutableTimeFrame.value!!.timePeriod)
+                getCoinHistoryUseCase.execute(coinId, mutableTimeFrame.value!!.timePeriod)
             mutableHistoryData.postValue(coinList)
         }
 

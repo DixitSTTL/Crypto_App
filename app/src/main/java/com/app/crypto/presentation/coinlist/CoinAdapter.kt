@@ -19,6 +19,7 @@ class CoinAdapter(val generalItemClickListeners: GeneralItemClickListeners) :
             mBinding.model = dataList[adapterPosition]
             mBinding.generalItemClickListeners = generalItemClickListeners
             mBinding.position = adapterPosition
+            mBinding.imageView.transitionName = "coin-"+dataList[adapterPosition].uuid
         }
 
     }
