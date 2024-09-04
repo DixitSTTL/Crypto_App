@@ -12,19 +12,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.app.crypto.R
 import com.app.crypto.databinding.ActivityCoinDetailBinding
-import com.app.crypto.domain.usecase.GetCoinHistoryUseCase
-import com.app.crypto.domain.usecase.GetCoinsDetailUseCase
 import com.app.crypto.presentation.util.CoinHistoryTimeFrame
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ActivityCoinDetail : AppCompatActivity() {
+    @Inject
     lateinit var factory: CoinDetailViewModelFactory
-    @Inject
-    lateinit var getCoinsDetailUseCase: GetCoinsDetailUseCase
-    @Inject
-    lateinit var getCoinHistoryUseCase: GetCoinHistoryUseCase
     private lateinit var mBinding: ActivityCoinDetailBinding
     private lateinit var mViewModel: CoinDetailViewModel
     lateinit var COIN_ID: String
@@ -37,11 +32,7 @@ class ActivityCoinDetail : AppCompatActivity() {
         setContentView(mBinding.root)
 
         readIntent()
-        factory = CoinDetailViewModelFactory(
-            getCoinsDetailUseCase = getCoinsDetailUseCase,
-            getCoinHistoryUseCase = getCoinHistoryUseCase,
-            coinId = COIN_ID
-        )
+        factory.setCoinId(COIN_ID)
 
         mViewModel =
             ViewModelProvider(this@ActivityCoinDetail, factory)[CoinDetailViewModel::class.java]
