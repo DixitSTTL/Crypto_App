@@ -1,12 +1,12 @@
 package com.app.crypto.presentation.coinlist
 
 import android.util.Log
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.crypto.data.model.Coin
 import com.app.crypto.domain.usecase.GetCoinsUseCase
+import com.app.crypto.presentation.util.ResultResponse
 import kotlinx.coroutines.launch
 
 class CoinViewModel(var getCoinsUseCase: GetCoinsUseCase) : ViewModel() {
@@ -23,15 +23,9 @@ class CoinViewModel(var getCoinsUseCase: GetCoinsUseCase) : ViewModel() {
             coinsState.value = CoinsState.Loading
             val response = getCoinsUseCase.execute()
             try {
-                val body = response.body()
-                Log.d("TAG", "getCoins: ${response.raw()}")
-
-                if (body != null) {
-                    coinsState.value = CoinsState.Success(body.data.coins)
-
-                } else {
-                    coinsState.value = CoinsState.Error("" + response.body())
-
+                when (response) {
+                    is ResultResponse.Error -> Log.d("Eroorr", "" + response.exception.message)
+                    is ResultResponse.Success -> CoinsState.Success(response.data.data.coins)
                 }
 
 

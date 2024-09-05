@@ -1,9 +1,9 @@
 package com.app.crypto.domain.repository
 
 import com.app.crypto.data.model.Coins
-import retrofit2.Response
+import com.app.crypto.presentation.util.ResultResponse
 
 interface CoinsRepository {
 
-    suspend fun getCoins(): Response<Coins>
+    suspend fun getCoins(): ResultResponse<Coins>
 }

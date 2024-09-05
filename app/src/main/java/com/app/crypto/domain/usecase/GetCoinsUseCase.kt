@@ -2,9 +2,9 @@ package com.app.crypto.domain.usecase
 
 import com.app.crypto.data.model.Coins
 import com.app.crypto.domain.repository.CoinsRepository
-import retrofit2.Response
+import com.app.crypto.presentation.util.ResultResponse
 
 class GetCoinsUseCase(var coinsRepository: CoinsRepository) {
-    suspend fun execute(): Response<Coins> = coinsRepository.getCoins()
+    suspend fun execute(): ResultResponse<Coins> = coinsRepository.getCoins()
 
 }
