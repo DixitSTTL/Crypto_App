@@ -1,8 +1,9 @@
 package com.app.crypto.data.repository.coins.datasource
 
-import com.app.crypto.data.model.Coins
-import retrofit2.Response
+import androidx.paging.PagingData
+import com.app.crypto.data.model.Coin
+import kotlinx.coroutines.flow.Flow
 
 interface CoinsRemoteDatasource {
-    suspend fun getCoins(): Response<Coins>
+    suspend fun getCoins(): Flow<PagingData<Coin>>
 }

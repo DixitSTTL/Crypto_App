@@ -2,6 +2,7 @@ package com.app.crypto.data.api
 
 import com.app.crypto.data.model.CoinDetail
 import com.app.crypto.data.model.CoinHistory
+import com.app.crypto.data.model.CoinSearch
 import com.app.crypto.data.model.Coins
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,7 +14,8 @@ interface ApiService {
     @GET("coins")
     suspend fun getCoins(
         @Query("x-access-token") key: String,
-        @Query("limit") limit: String
+        @Query("limit") limit: String,
+        @Query("offset") page: String
     ): Response<Coins>
 
     @GET()
@@ -28,5 +30,11 @@ interface ApiService {
         @Query("timePeriod") timePeriod: String,
         @Query("x-access-token") key: String
     ): Response<CoinHistory>
+
+    @GET()
+    suspend fun getCoinSearch(
+        @Url url: String,
+        @Query("query") timePeriod: String,
+    ): Response<CoinSearch>
 
 }

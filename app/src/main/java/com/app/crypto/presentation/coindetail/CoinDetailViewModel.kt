@@ -36,7 +36,7 @@ class CoinDetailViewModel(
             when (coinDetail) {
                 is ResultResponse.Error -> Log.d("Eroorr", "" + coinDetail.exception.message)
                 is ResultResponse.Success -> mutableCoinList.postValue(coinDetail.data)
-
+                ResultResponse.Loading -> TODO()
             }
         }
     }
@@ -49,7 +49,7 @@ class CoinDetailViewModel(
             when (coinHistoryData) {
                 is ResultResponse.Error -> Log.d("Eroorr", "" + coinHistoryData.exception.message)
                 is ResultResponse.Success -> mutableHistoryData.postValue(coinHistoryData.data)
-
+                ResultResponse.Loading -> TODO()
             }
         }
 

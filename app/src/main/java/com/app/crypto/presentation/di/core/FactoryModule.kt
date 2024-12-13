@@ -3,8 +3,10 @@ package com.app.crypto.presentation.di.core
 import com.app.crypto.domain.usecase.GetCoinHistoryUseCase
 import com.app.crypto.domain.usecase.GetCoinsDetailUseCase
 import com.app.crypto.domain.usecase.GetCoinsUseCase
+import com.app.crypto.domain.usecase.GetSearchCoinUseCase
 import com.app.crypto.presentation.coindetail.CoinDetailViewModelFactory
 import com.app.crypto.presentation.coinlist.CoinViewModelFactory
+import com.app.crypto.presentation.searchCoin.CoinSearchViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +36,16 @@ class FactoryModule {
         return CoinDetailViewModelFactory(
             getCoinsDetailUseCase,
             getCoinHistoryUseCase,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoinSearchViewModelFactory(
+        getSearchCoinUseCase: GetSearchCoinUseCase,
+    ): CoinSearchViewModelFactory {
+        return CoinSearchViewModelFactory(
+            getSearchCoinUseCase
         )
     }
 

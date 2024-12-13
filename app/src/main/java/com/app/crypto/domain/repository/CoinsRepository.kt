@@ -1,9 +1,10 @@
 package com.app.crypto.domain.repository
 
-import com.app.crypto.data.model.Coins
-import com.app.crypto.presentation.util.ResultResponse
+import androidx.paging.PagingData
+import com.app.crypto.data.model.Coin
+import kotlinx.coroutines.flow.Flow
 
 interface CoinsRepository {
 
-    suspend fun getCoins(): ResultResponse<Coins>
+    suspend fun getCoins(): Flow<PagingData<Coin>>
 }

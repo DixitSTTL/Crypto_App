@@ -122,70 +122,70 @@ class CustomBindingAdapter {
             isDark: Boolean?,
             mViewModel: CoinDetailViewModel
         ) {
-            var format=""
-            var granularity=1.0f
+            var format = ""
+            var granularity = 1.0f
 
             when (mViewModel.mutableTimeFrame.value) {
 
                 CoinHistoryTimeFrame.H1 -> {
-                    format= Constants.DATA_FORMAT_HOUR
-                    granularity= 1.0f
+                    format = Constants.DATA_FORMAT_HOUR
+                    granularity = 1.0f
                 }
 
                 CoinHistoryTimeFrame.H3 -> {
-                    format=Constants.DATA_FORMAT_HOUR
-                    granularity= 1.0f
+                    format = Constants.DATA_FORMAT_HOUR
+                    granularity = 1.0f
 
                 }
 
                 CoinHistoryTimeFrame.H12 -> {
-                    format= Constants.DATA_FORMAT_HOUR
-                    granularity= 1.0f
+                    format = Constants.DATA_FORMAT_HOUR
+                    granularity = 1.0f
 
                 }
 
                 CoinHistoryTimeFrame.H24 -> {
-                    format=Constants.DATA_FORMAT_HOUR
-                    granularity= 1.0f
+                    format = Constants.DATA_FORMAT_HOUR
+                    granularity = 1.0f
                 }
 
                 CoinHistoryTimeFrame.D7 -> {
-                    format=Constants.DATA_FORMAT_DAY_MONTH
-                    granularity=24.0f
+                    format = Constants.DATA_FORMAT_DAY_MONTH
+                    granularity = 24.0f
                 }
 
                 CoinHistoryTimeFrame.D30 -> {
-                    format=Constants.DATA_FORMAT_DAY_MONTH
-                    granularity= 24.0f
+                    format = Constants.DATA_FORMAT_DAY_MONTH
+                    granularity = 24.0f
                 }
 
                 CoinHistoryTimeFrame.M3 -> {
-                    format=Constants.DATA_FORMAT_DAY_MONTH
-                    granularity= 3.0f
+                    format = Constants.DATA_FORMAT_DAY_MONTH
+                    granularity = 3.0f
 
                 }
 
                 CoinHistoryTimeFrame.Y1 -> {
-                    format=Constants.DATA_FORMAT_MONTH
-                    granularity= 30f
+                    format = Constants.DATA_FORMAT_MONTH
+                    granularity = 30f
 
                 }
 
                 CoinHistoryTimeFrame.Y3 -> {
-                    format=Constants.DATA_FORMAT_YEAR
-                    granularity= 365f
+                    format = Constants.DATA_FORMAT_YEAR
+                    granularity = 365f
 
                 }
 
                 CoinHistoryTimeFrame.Y5 -> {
-                    format=Constants.DATA_FORMAT_YEAR
-                    granularity= 365f
+                    format = Constants.DATA_FORMAT_YEAR
+                    granularity = 365f
 
                 }
 
                 null -> {
-                    format=Constants.DATA_FORMAT_MONTH_YEAR
-                    granularity= 1.0f
+                    format = Constants.DATA_FORMAT_MONTH_YEAR
+                    granularity = 1.0f
 
                 }
             }
@@ -195,7 +195,7 @@ class CustomBindingAdapter {
             val changeDouble = change?.toDouble()
             data?.let {
                 if (changeDouble != null) {
-                    drawMaxLineChart(lineChart, data, changeDouble < 0, isDark, form,granularity)
+                    drawMaxLineChart(lineChart, data, changeDouble < 0, isDark, form, granularity)
                 }
             }
         }
@@ -293,6 +293,7 @@ class CustomBindingAdapter {
             lineChart.description.isEnabled = false
             lineChart.setDrawMarkers(true)
             lineChart.animateY(1000)
+            lineChart.animateX(1000)
             lineChart.animateX(1000)
 //            lineChart.xAxis.setDrawAxisLine(false)
 //            lineChart.xAxis.setDrawGridLines(false)

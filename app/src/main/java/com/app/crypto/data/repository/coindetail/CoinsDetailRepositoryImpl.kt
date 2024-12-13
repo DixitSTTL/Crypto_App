@@ -10,23 +10,20 @@ class CoinsDetailRepositoryImpl(var coinsDatasource: CoinsDetailsRemoteDatasourc
 
     override suspend fun getCoinsDetail(end: String?): ResultResponse<Coin_?> {
         return try {
-            if(end!=null) {
+            if (end != null) {
                 val response = coinsDatasource.getCoinsDetail(end)
                 if (response.isSuccessful) {
                     response.body()?.let {
                         ResultResponse.Success(it.data.coin)
                     } ?: ResultResponse.Error(Exception("No Data"))
-                }
-                else{
+                } else {
                     ResultResponse.Error(Exception("API Error: ${response.code()}"))
                 }
-            }
-            else{
+            } else {
                 ResultResponse.Error(Exception("coin id empty"))
             }
 
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             return ResultResponse.Error(e)
 
         }

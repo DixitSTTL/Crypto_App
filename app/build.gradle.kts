@@ -81,4 +81,6 @@ dependencies {
     //MPAndroidChart
     implementation(libs.mpandroidchart)
 
+    //Paging
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
 }

@@ -1,6 +1,8 @@
 package com.app.crypto.presentation.di.core
 
 import com.app.crypto.data.api.ApiService
+import com.app.crypto.data.repository.coinSearch.datasource.CoinSearchRemoteDatasource
+import com.app.crypto.data.repository.coinSearch.datasourceimpl.CoinSearchRemoteDatasourceImpl
 import com.app.crypto.data.repository.coindetail.datasource.CoinsDetailsRemoteDatasource
 import com.app.crypto.data.repository.coindetail.datasourceimpl.CoinsDetailRemoteDatasourceImpl
 import com.app.crypto.data.repository.coinhistory.datasource.CoinHistoryRemoteDatasource
@@ -43,6 +45,15 @@ class RemoteDataModule() {
         return CoinHistoryRemoteDatasourceImpl(
             apiService,
             "coinranking197d6c596b85998a5f498d684933a048fa5534a10ed2c856"
+        )
+
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoinSearchDataSource(apiService: ApiService): CoinSearchRemoteDatasource {
+        return CoinSearchRemoteDatasourceImpl(
+            apiService
         )
 
     }

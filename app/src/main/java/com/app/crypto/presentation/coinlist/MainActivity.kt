@@ -4,13 +4,18 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.climate_trace.businesslogic.interfaces.GeneralItemClickListeners
 import com.app.crypto.R
@@ -20,7 +25,9 @@ import com.app.crypto.presentation.coindetail.ActivityCoinDetail
 import com.app.crypto.presentation.coinlist.CoinsState.Error
 import com.app.crypto.presentation.coinlist.CoinsState.Loading
 import com.app.crypto.presentation.coinlist.CoinsState.Success
+import com.app.crypto.presentation.searchCoin.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.util.Pair as UtilPair
 
@@ -43,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                     view?.findViewById<ImageView>(R.id.imageView)!!,
                     "coin-" + data.uuid
                 ),
-                UtilPair.create(view.findViewById<ImageView>(R.id.coinTxt)!!, "text-" + data.uuid),
+//                UtilPair.create(view.findViewById<ImageView>(R.id.coinTxt)!!, "text-" + data.uuid),
             )
             startActivity(
                 Intent(
@@ -62,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        mViewModel = ViewModelProvider(this, factory).get(CoinViewModel::class.java)
+        mViewModel = ViewModelProvider(this, factory)[CoinViewModel::class.java]
 
         init()
         observe()
@@ -71,28 +78,56 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun observe() {
-        mViewModel.coinsState.observe(this) { state ->
-            when (state) {
-                Loading -> {
-                    mBinding.progress.visibility = VISIBLE
+        mAdapter.addLoadStateListener { loadState ->
+
+            if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading)
+                mBinding.progress.visibility = VISIBLE
+            else {
+                mBinding.progress.visibility = GONE
+
+                // If we have an error, show a toast
+                val errorState = when {
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
+                }
+                errorState?.let {
+//                    Toast.makeText(mContext, it.error.toString(), Toast.LENGTH_LONG).show()
                 }
 
-                is Error -> {
-                    mBinding.progress.visibility = GONE
-                    Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
-                }
-
-                is Success -> {
-                    mBinding.progress.visibility = GONE
-                    mAdapter.setData(state.coins)
-                }
-
-                null -> {}
             }
         }
+
+        lifecycleScope.launch {
+
+            mViewModel.coinsState.observe(this@MainActivity) { state ->
+                when (state) {
+                    Loading -> {
+                    }
+
+
+                    is Error -> {
+                        mBinding.progress.visibility = GONE
+                        Toast.makeText(this@MainActivity, state.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    is Success -> {
+                        mBinding.progress.visibility = GONE
+                        mAdapter.submitData(lifecycle, state.coins)
+                    }
+
+                    null -> {}
+
+                }
+            }
+        }
+
     }
 
     private fun init() {
+        setSupportActionBar(mBinding.toolbar)
+
         mBinding.apply {
 
             recCoinList.adapter = mAdapter
@@ -103,8 +138,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("onDestroy", "onDestroy")
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menu?.clear()
+        menuInflater.inflate(R.menu.home_menu,menu)
+        return super.onCreateOptionsMenu(menu)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_search) {
+            startActivity(Intent(this@MainActivity, SearchActivity::class.java))
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }

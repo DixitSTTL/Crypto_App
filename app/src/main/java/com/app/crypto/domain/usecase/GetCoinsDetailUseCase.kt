@@ -6,6 +6,7 @@ import com.app.crypto.presentation.util.ResultResponse
 import javax.inject.Inject
 
 class GetCoinsDetailUseCase @Inject constructor(private var coinsDetailRepository: CoinsDetailRepository) {
-    suspend fun execute(end: String?): ResultResponse<Coin_?> = coinsDetailRepository.getCoinsDetail(end)
+    suspend fun execute(end: String?): ResultResponse<Coin_?> =
+        coinsDetailRepository.getCoinsDetail(end)
 
 }

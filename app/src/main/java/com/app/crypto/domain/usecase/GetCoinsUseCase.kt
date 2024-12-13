@@ -1,10 +1,11 @@
 package com.app.crypto.domain.usecase
 
-import com.app.crypto.data.model.Coins
+import androidx.paging.PagingData
+import com.app.crypto.data.model.Coin
 import com.app.crypto.domain.repository.CoinsRepository
-import com.app.crypto.presentation.util.ResultResponse
+import kotlinx.coroutines.flow.Flow
 
-class GetCoinsUseCase(var coinsRepository: CoinsRepository) {
-    suspend fun execute(): ResultResponse<Coins> = coinsRepository.getCoins()
+class GetCoinsUseCase(private var coinsRepository: CoinsRepository) {
+    suspend fun execute(): Flow<PagingData<Coin>> = coinsRepository.getCoins()
 
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.transition.Fade
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
@@ -22,7 +23,7 @@ class ActivityCoinDetail : AppCompatActivity() {
     lateinit var factory: CoinDetailViewModelFactory
     private lateinit var mBinding: ActivityCoinDetailBinding
     private lateinit var mViewModel: CoinDetailViewModel
-    lateinit var COIN_ID: String
+    private lateinit var COIN_ID: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,12 +50,18 @@ class ActivityCoinDetail : AppCompatActivity() {
             COIN_ID = it.getStringExtra("COIN_ID").toString()
             ViewCompat.setTransitionName(
                 mBinding.imageView,
-                "coin-" + COIN_ID
+                "coin-$COIN_ID"
             )
             ViewCompat.setTransitionName(
                 mBinding.coinTxt,
-                "text-" + COIN_ID
+                "text-$COIN_ID"
             )
+            val fade = Fade()
+            fade.excludeTarget(android.R.id.statusBarBackground, true);
+            fade.excludeTarget(android.R.id.navigationBarBackground, true);
+
+            window.enterTransition = fade
+            window.exitTransition = fade
         }
     }
 
@@ -111,6 +118,7 @@ class ActivityCoinDetail : AppCompatActivity() {
                 R.id.time3y -> {
                     mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.Y3
                 }
+
                 R.id.time5y -> {
                     mViewModel.mutableTimeFrame.value = CoinHistoryTimeFrame.Y5
                 }
@@ -136,7 +144,7 @@ class ActivityCoinDetail : AppCompatActivity() {
     }
 
 
-    fun isSystemInDarkMode(): Boolean {
+    private fun isSystemInDarkMode(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as? UiModeManager
 
